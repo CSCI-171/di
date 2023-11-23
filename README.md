@@ -366,8 +366,6 @@ During voting, we prioritized visualizations that had interactivity, were simple
 
 # STORYBOARDING:
 
-(This section and the sketch below were composed entirely by Elizabeth)
-
 ## **Main message**
 
 Canadian commercial real estate is poised for significant growth in the post-pandemic era, fueled by evolving consumer behaviors and regional population growth.
