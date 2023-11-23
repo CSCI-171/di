@@ -165,14 +165,8 @@ The extent of data cleaning required may vary based on the datasets we choose to
 **Articles and Other Sources**
 
 * **Office**: Occupancy Rates [https://www.cbre.ca/insights/figures/canada-office-figures-q2-2023](https://www.cbre.ca/insights/figures/canada-office-figures-q2-2023)
-* **Industrial**: Data Centers
-
-[https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/investing-in-the-rising-data-center-economy](https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/investing-in-the-rising-data-center-economy)
-
-* **Retail**: Grocery-anchored
-
-[https://www.matthews.com/grocery-anchored-retail/](https://www.matthews.com/grocery-anchored-retail/)
-
+* **Industrial**: Data Centers [https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/investing-in-the-rising-data-center-economy](https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/investing-in-the-rising-data-center-economy)
+* **Retail**: Grocery-anchored [https://www.matthews.com/grocery-anchored-retail/](https://www.matthews.com/grocery-anchored-retail/)
 * **Residential**: Mutlifamily [https://multifamily.fanniemae.com/news-insights/multifamily-market-commentary/2023-multifamily-market-outlook-turbulence-ahead](https://multifamily.fanniemae.com/news-insights/multifamily-market-commentary/2023-multifamily-market-outlook-turbulence-ahead)
 
 # WEEK 9
