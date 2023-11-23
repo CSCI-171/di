@@ -1,6 +1,6 @@
 # Design Invest Team CSCI-171 Fall 2023
 
-To view live website (click here!)[https://csci-171.github.io/di/]
+To view live website [click here!](https://csci-171.github.io/di/)
 
 **CS171 Design Sprint Process Book**
 
