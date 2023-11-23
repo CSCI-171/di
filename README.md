@@ -1,5 +1,4 @@
-# Design Invest Team
-CSCI-171 Fall 2023
+# Design Invest Team CSCI-171 Fall 2023
 
 **CS171 Design Sprint Process Book**
 
