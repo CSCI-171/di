@@ -67,7 +67,36 @@
             <div class="container custom-container-box">
                 <div class="row">
                     <h1>Macro Page</h1>
-                    <h2>This is where visualization will be.</h2>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>GDP - "Mother Graph"</h2>
+                            <div id="macro_vis"></div>
+                            <!--			<img src="img/gdp.png">-->
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h2>Consumer Spending</h2>
+                            <div id="consumer_vis"></div>
+                            <!--                                			<img src="img/canada.jpg">-->
+                        </div>
+                        <div class="col-md-4">
+                            <div id="placeholder_vis"></div>
+                            <div class="col-md-12">
+                                <h2>Housing Value</h2>
+                                <div id="housing_vis"></div>
+                                <!--				<img src="img/housing_value.png">-->
+                            </div>
+                            <div class="col-md-12">
+                                <h2>Mortgage Rates</h2>
+                                <div id="mortgage_vis"></div>
+                                <!--				<img src="img/mortgage_rates.png">-->
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -93,7 +122,34 @@
             <div class="container custom-container-box">
                 <div class="row">
                     <h1>Performance Page</h1>
-                    <h2>This is where visualization will be.</h2>
+                    <h2>This is where Naina's visualization will be.</h2>
+
+                    <div class="centered-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h1><span class="h1-sub">Sector Allocations</span></h1>
+                                <h3>Industrial, Retail, Residential, Office</h3>
+                            </div>
+                        </div>
+                        <div class="row" style="width:100%">
+                            <div class="col-lg-8">
+                                <div id="chart-area"></div>
+                                <!--                                <div id="legend"></div>-->
+                            </div>
+                            <div class="col-lg-4 text-end">
+                                <div id="commentary-box"></div>
+                            </div>
+                            <!-- Buttons Row -->
+                            <div class="row mt-sm-3 buttons">
+                            </div>
+                            <!-- Text below scatter plot -->
+                            <a class="source"
+                               href="https://www.msci.com/research-and-insights?topic=real_estate" target="_blank">Source:
+                                <em>MSCI</em>
+                            </a>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -118,7 +174,48 @@
             <div class="container custom-container-box">
                 <div class="row">
                     <h1>Sectors Page</h1>
-                    <h2>This is where visualization will be.</h2>
+                    <!-- HEADER -->
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="header"
+                                     style="height: 10vh; background: #bdbdbd; text-align: center; display: flex; align-items: center; justify-content: center;">
+                                    <h2>What is the impact of economic events over time by market?</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <img alt="Sectors Visualization" class="img-fluid" src="img/sectors.jpeg">
+                        </div>
+                    </div>
+
+
+<!--                    &lt;!&ndash; Map and Sector Visualizations Row &ndash;&gt;-->
+<!--                    <div id="visualization-container">-->
+<!--                        <div class="sector-icon" id="industrial">-->
+<!--                            &lt;!&ndash; SVG for Industrial will be loaded here &ndash;&gt;-->
+<!--                        </div>-->
+<!--                        <div class="sector-icon" id="office">-->
+<!--                            <div id="officeVis"></div>-->
+<!--                            &lt;!&ndash; SVG for Office will be loaded here &ndash;&gt;-->
+<!--                        </div>-->
+<!--                        <div class="sector-icon" id="multi">-->
+<!--                            &lt;!&ndash; SVG for Multi will be loaded here &ndash;&gt;-->
+<!--                        </div>-->
+<!--                        <div class="sector-icon" id="retail">-->
+<!--                            &lt;!&ndash; SVG for Retail will be loaded here &ndash;&gt;-->
+<!--                        </div>-->
+<!--                        <div id="canada">-->
+<!--                            &lt;!&ndash; Map of Canada will be rendered here &ndash;&gt;-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; TIMELINE CONTAINER &ndash;&gt;-->
+<!--                    <div class="container-fluid">-->
+<!--                        <div class="row" style="height: 18vh; background: #bdbdbd; padding: 0; border: 0">-->
+<!--                            <div id="brushDiv" style="height: 100%; width:100%;"></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>
@@ -189,6 +286,14 @@
 <!--<script src="js/retailVis.js"></script>-->
 <!--<script src="js/officeVis.js"></script>-->
 <!--<script src="js/brushVis.js"></script>-->
+<!--<script src="js/mainEK.js"></script>-->
+<script src="js/canadaMap.js"></script>
+<script src="js/industrialVis.js"></script>
+<script src="js/multifamilyVis.js"></script>
+<script src="js/retailVis.js"></script>
+<script src="js/officeVis.js"></script>
+<script src="js/brushVis.js"></script>
+
 <!--<script src="js/mainEK.js"></script>-->
 <script src="js/mainJS.js"></script>
 

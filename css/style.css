@@ -124,6 +124,11 @@ h3 {
   background-attachment: fixed;
 }
 
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
 #recommendation{
   /*background-image: url(../img/intro.jpg);*/
   background-color: #999aa0;
