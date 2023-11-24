@@ -19,20 +19,20 @@ h1 {
   font-family: 'Vina Sans', serif;
   color: #941010;
   margin-top: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
   font-size: 48px;
   text-shadow: 3px 3px 3px #aaa;
 }
 
 h2 {
   color: #ffffff;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   font-size: 28px;
   text-shadow: 2px 2px 2px #aaa;
 }
 
 h3 {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   font-size: 28px;
   text-shadow: 2px 2px 2px #aaa;
 }

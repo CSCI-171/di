@@ -1,5 +1,5 @@
 // Initialize the map and set its view to Canada's approximate geographic center
-var map = L.map('map').setView([49.1304, -97.1384], 4.75); // Latitude, Longitude, Zoom Level
+var map = L.map('map').setView([49.1304, -97.1384], 4); // Latitude, Longitude, Zoom Level
 
 // Add OpenStreetMap tiles to your map
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
