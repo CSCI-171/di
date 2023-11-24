@@ -13,8 +13,10 @@ class LineChart {
 
         vis.margin = { top: 40, right: 0, bottom: 60, left: 60 };
 
-        vis.width = 1000 - vis.margin.left - vis.margin.right,
+        vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right,
             vis.height = 300 - vis.margin.top - vis.margin.bottom;
+        // vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
+
 
         // SVG drawing area
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
@@ -42,7 +44,7 @@ class LineChart {
         vis.x.domain(minMaxX);
 
         let minMaxY = [d3.min(vis.data.map(function (d) { return d.gdp_yy_chg; })),
-                             d3.max(vis.data.map(function (d) { return d.gdp_yy_chg; }))];
+            d3.max(vis.data.map(function (d) { return d.gdp_yy_chg; }))];
 
         vis.y.domain(minMaxY);
 
@@ -135,15 +137,15 @@ class LineChart {
     }
 
     // onSelectionChange(selectionStart, selectionEnd) {
-        // let vis = this;
+    // let vis = this;
 
-        // Change the selected time range
-        // d3.select("#time-period-min").text(dateFormatter(selectionStart));
-        // d3.select("#time-period-max").text(dateFormatter(selectionEnd));
+    // Change the selected time range
+    // d3.select("#time-period-min").text(dateFormatter(selectionStart));
+    // d3.select("#time-period-max").text(dateFormatter(selectionEnd));
 
-        // // Not sure why the other way didn't work, but this way works for me!
-        // document.querySelector(".time-period-min").innerText = dateFormatter(selectionStart);
-        // document.querySelector(".time-period-max").innerText = dateFormatter(selectionEnd);
+    // // Not sure why the other way didn't work, but this way works for me!
+    // document.querySelector(".time-period-min").innerText = dateFormatter(selectionStart);
+    // document.querySelector(".time-period-max").innerText = dateFormatter(selectionEnd);
 
     // }
 }

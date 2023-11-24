@@ -11,9 +11,59 @@ class cBarChart {
     initVis() {
         let vis = this;
 
+        // Get market change values
+        // total_consumer_spending
+        //
+        // personal_gs
+        // food_bev
+        // health_gs
+        // medical_products
+        //
+        // restaurants_hotels
+        // eating_out
+        // clothing
+        // rec_cult
+        //
+        // household_expenditures
+        // household_appliances
+        // household_outdoor
+        // housing_maintenance
+
+        // Create a new dataset with just these market change values
+        vis.market_change_data = [
+            { category: 'Total Consumer Spending'
+                , change: calculateMarketValueChange(vis.data, "total_consumer_spending") },
+            { category: 'Personal Care Goods and Services'
+                , change: calculateMarketValueChange(vis.data, "personal_gs") },
+            { category: 'Food and Non-Alcoholic Beverages'
+                , change: calculateMarketValueChange(vis.data, "food_bev") },
+            { category: 'Health Goods and Services'
+                , change: calculateMarketValueChange(vis.data, "health_gs") },
+            { category: 'Medical Products'
+                , change: calculateMarketValueChange(vis.data, "medical_products") },
+            { category: 'Travel and Hotels'
+                , change: calculateMarketValueChange(vis.data, "restaurants_hotels") },
+            { category: 'Eating Out'
+                , change: calculateMarketValueChange(vis.data, "eating_out") },
+            { category: 'Clothing and Footwear'
+                , change: calculateMarketValueChange(vis.data, "clothing") },
+            { category: 'Residential Sales Price Index'
+                , change: calculateMarketValueChange(vis.data, "rec_cult") },
+            { category: 'Residential Sales Price Index'
+                , change: calculateMarketValueChange(vis.data, "household_expenditures") },
+            { category: 'Residential Sales Price Index'
+                , change: calculateMarketValueChange(vis.data, "household_appliances") },
+            { category: 'Residential Sales Price Index'
+                , change: calculateMarketValueChange(vis.data, "household_outdoor") },
+            { category: 'Residential Sales Price Index'
+                , change: calculateMarketValueChange(vis.data, "housing_maintenance") },
+        ];
+
+        console.log("vis.market_change_data: ", vis.market_change_data)
+
         vis.margin = { top: 40, right: 0, bottom: 60, left: 60 };
 
-        vis.width = 600 - vis.margin.left - vis.margin.right,
+        vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right,
             vis.height = 300 - vis.margin.top - vis.margin.bottom;
 
         // SVG drawing area
@@ -24,8 +74,8 @@ class cBarChart {
             .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
         // Scales and axes
-        vis.x = d3.scaleTime()
-            .range([0, vis.width]);
+        vis.x = d3.scaleBand()
+            .range([0, vis.width]).padding(0.1);
 
         vis.y = d3.scaleLinear()
             .range([vis.height, 0]);
@@ -37,19 +87,27 @@ class cBarChart {
             .scale(vis.y)
             .ticks(6);
 
-        // Set domains by finding the min and max of both the X and Y
-        let minMaxX = d3.extent(vis.data.map(function (d) { return d.date; }));
-        vis.x.domain(minMaxX);
-
-        let minMaxY = [0, d3.max(vis.data.map(function (d) { return d.gdp_yy_chg; }))];
-        vis.y.domain(minMaxY);
-
         vis.svg.append("g")
             .attr("class", "x-axis axis")
             .attr("transform", "translate(0," + vis.height + ")");
 
         vis.svg.append("g")
             .attr("class", "y-axis axis");
+
+        // TODO might need to move this down to updatevis later? or maybe it's fine here...
+        // Scale the range of the data
+        vis.x.domain(vis.market_change_data.map(d => d.category));
+        vis.y.domain([0, d3.max(vis.market_change_data, d => d.change)]);
+
+        // Draw the bars
+        vis.svg.selectAll(".bar")
+            .data(vis.market_change_data)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", d => vis.x(d.category))
+            .attr("width", vis.x.bandwidth())
+            .attr("y", d => vis.y(d.change))
+            .attr("height", d => vis.height - vis.y(d.change));
 
 
         // (Filter, aggregate, modify data)
