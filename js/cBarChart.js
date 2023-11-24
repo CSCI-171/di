@@ -36,12 +36,15 @@ class cBarChart {
         vis.y = d3.scaleBand()
             .range([vis.height, 0]).padding(0.1);
 
+        // Define a percentage format
+        const formatPercent = d3.format(".0%");
+
         vis.xAxis = d3.axisBottom()
-            .scale(vis.x);
+            .scale(vis.x)
+            .tickFormat(formatPercent);
 
         vis.yAxis = d3.axisLeft()
-            .scale(vis.y)
-            // .ticks(13);
+            .scale(vis.y);
 
         vis.svg.append("g")
             .attr("class", "x-axis axis")
@@ -101,6 +104,11 @@ class cBarChart {
 
     updateVis() {
         let vis = this;
+
+        // Update the domain
+        // This minValue code is to make sure that the x-axis starts at 0 if there are no negative values
+        const minValue = d3.min(vis.market_change_data, d => d.change);
+        vis.x.domain([minValue < 0 ? minValue : 0, d3.max(vis.market_change_data, d => d.change)]);
 
         // Enter Update barcharts
         vis.svg.selectAll(".bar")

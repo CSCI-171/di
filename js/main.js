@@ -1,3 +1,13 @@
+/* * * * * * * * * * * * * *
+*           MAIN           *
+* * * * * * * * * * * * * */
+
+// Combined Global Variables
+let myMap, myBrushVis, myRetail, myIndustrial, myMultifamily, myOffice;
+let selectedTimeRange = [];
+let selectedCategory;
+let macroChart, consumerChart, housingChart, mortgageChart;
+
 // Function to convert date objects to strings or reverse
 let dateFormatter = d3.timeFormat("%Y-%m-%d");
 let dateParser = d3.timeParse("%m/%d/%Y");
@@ -6,7 +16,14 @@ let promises = [
     d3.csv("data/macro.csv"),
     d3.csv("data/consumer.csv"),
     d3.csv("data/housing.csv"),
+    d3.json("data/canada.topo.json"),
+    d3.json("data/filtered_file.json"),
+    d3.csv("data/IndustrialAvailability.csv"),
+    d3.csv("data/OfficeVacancy.csv"),
+    d3.csv("data/RentalRateGrowthMultifamily_modified.csv"),
+    d3.csv("data/Retail.csv")
 ];
+
 
 Promise.all(promises)
     .then(function (data) {
@@ -81,19 +98,28 @@ Promise.all(promises)
             }
         });
 
-        // Call createVis with the renamed data
-        createVis(renamedData);
-        // createVis(data);
+        initMainPage(renamedData);
     })
     .catch(function (err) {
-        console.log(err)
+        console.error('Error loading data: ', err);
+        // Display an error message to the user, or handle the error as appropriate.
     });
 
+// initMainPage
+function initMainPage(dataArray) {
 
-function createVis(data) {
-    let macro_data = data[0]
-    let consumer_data = data[1]
-    let housing_data = data[2]
+    // log data
+    console.log('check out ALL the data', dataArray);
+
+    let macro_data = dataArray[0]
+    let consumer_data = dataArray[1]
+    let housing_data = dataArray[2]
+    let geoData = dataArray[3];
+    let citiesData = dataArray[4];
+    let industrialData = dataArray[5];
+    let officeData = dataArray[6];
+    let multifamilyData = dataArray[7];
+    let retailData = dataArray[8];
 
     console.log("macro_data: ", macro_data)
     console.log("consumer_data: ", consumer_data)
@@ -110,10 +136,10 @@ function createVis(data) {
         }
     }
 
-    let macroChart = new LineChart("macro_vis", macro_data, macroEventHandler)
-    let consumerChart = new cBarChart("consumer_vis", consumer_data)
-    let housingChart = new hBarChart("housing_vis", housing_data)
-    let mortgageChart = new AreaChart("mortgage_vis", housing_data)
+    macroChart = new LineChart("macro_vis", macro_data, macroEventHandler)
+    consumerChart = new cBarChart("consumer_vis", consumer_data)
+    housingChart = new hBarChart("housing_vis", housing_data)
+    mortgageChart = new AreaChart("mortgage_vis", housing_data)
 
     macroEventHandler.bind("selectionChanged", function(event){
         let rangeStart = event.detail[0];
@@ -122,8 +148,162 @@ function createVis(data) {
         housingChart.onSelectionChange(rangeStart, rangeEnd);
         mortgageChart.onSelectionChange(rangeStart, rangeEnd);
     });
+
+
+    // Initialize map
+    myMap = new CanadaMap('canada', geoData, citiesData, industrialData, multifamilyData, retailData);
+    // myMap = new mapVis('canada', "data/canada.topo.json", "data/filtered_file.json", 'brushDiv');
+    // Initialize map with actual data
+    //myMap = new MapVis('canada', officeData, geoData, citiesData, industrialData, multifamilyData, retailData);
+
+    console.log(officeData);
+
+    // Initialize visualizations for each sector
+    myIndustrial = new IndustrialVis('industrialVis', industrialData);
+    myOffice = new CanadaMap('officeVis', officeData);
+    myMultifamily = new MultifamilyVis('multifamilyVis', multifamilyData);
+    myRetail = new RetailVis('retailVis', retailData);
+
+    // init brush
+    myBrushVis = new BrushVis('brushDiv', industrialData, officeData, multifamilyData, retailData);
+
+    // Listen for the category selector change
+    // document.getElementById('categorySelector').addEventListener('change', categoryChange);
+
+    // Load each sector SVG
+    loadSVG('industrial', 'img/industrial.svg');
+    loadSVG('office', 'img/office.svg');
+    loadSVG('multi', 'img/multi.svg');
+    loadSVG('retail', 'img/retail.svg');
+
+
+//     // Set the initial category
+//     categoryChange();
+
+
+// Category change function
+// function categoryChange() {
+//     selectedCategory = document.getElementById('categorySelector').value;
+//
+//     if (myMap) {
+//         myMap.wrangleData();
+//     } else {
+//         console.error('myMap is not initialized');
+//     }
+//     if (myRetail) {
+//         myRetail.wrangleData();
+//     } else {
+//         console.error('retail is not initialized');
+//     }
+//     // After initializing myBarVisOne and myBarVisTwo
+//     if (myIndustrial) {
+//         myIndustrial.wrangleData();
+//     } else {
+//         console.error('industrial is not initialized');
+//     }
+//
+//     if (myMultifamily) {
+//         myMultifamily.wrangleData();
+//     } else {
+//         console.error('multifamily is not initialized');
+//     }
+//
+//     if (myOffice) {
+//         myOffice.wrangleData();
+//     } else {
+//         console.error('office is not initialized');
+//     }
+// }
+
+// Function to load and append SVG to the container
+    function loadSVG(sectorId, filePath) {
+        fetch(filePath)
+            .then(response => response.text())
+            .then(svgData => {
+                document.getElementById(sectorId).innerHTML = svgData;
+                // Add your hover event listener here
+                document.getElementById(sectorId).addEventListener('mouseenter', () => {
+                    // Update the map based on the sector hovered
+                    updateMapForSector(sectorId);
+                });
+            });
+    }
+
+// Function to update the map visualization based on the sector
+    function updateMapForSector(sectorId) {
+        // Logic to update the map visualization
+        console.log(`Update map for sector: ${sectorId}`);
+
+        // Update the map based on the sector hovered
+        myMap.wrangleData(sectorId);
+        myBrushVis.wrangleData(sectorId);
+        // myRetail.wrangleData(sectorId);
+        // myIndustrial.wrangleData(sectorId);
+        // myMultifamily.wrangleData(sectorId);
+        // myOffice.wrangleData(sectorId);
+
+
+    }
+
+
+// Ensure the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function () {
+        // Fetch and load the industrial SVG
+        fetch('img/industrial.svg')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('industrial').innerHTML = data;
+            });
+
+        // Repeat the process for multi, office, and retail
+        fetch('img/multi.svg')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('multi').innerHTML = data;
+            });
+
+        fetch('img/office.svg')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('office').innerHTML = data;
+            });
+
+        fetch('img/retail.svg')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('retail').innerHTML = data;
+            });
+    });
+
+    document.addEventListener('scroll', function() {
+        const sections = document.querySelectorAll('.scroll-section');
+        const dots = document.querySelectorAll('.dot-navigation .dot');
+
+        sections.forEach((section, index) => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const pageScroll = document.documentElement.scrollTop;
+
+            // Check if the section is currently active (in viewport)
+            if (pageScroll >= sectionTop && pageScroll < sectionTop + sectionHeight) {
+                dots[index].classList.add('active');
+            } else {
+                dots[index].classList.remove('active');
+            }
+        });
+    });
+// Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
 }
 
+// For Macro Dash
 function calculateMarketValueChange(data, selectedColumn) {
     // Filter out rows with NA values for 'Market value of housing stock'
     const filteredData = data.filter(d => !isNaN(d[selectedColumn]));
@@ -159,6 +339,7 @@ function calculateMarketValueChange(data, selectedColumn) {
     return percentageChange;
 }
 
+// For Macro Dash
 function createConsumerData(data) {
     let consumer_data = [
         { category: 'Total Consumer Spending'
@@ -192,7 +373,7 @@ function createConsumerData(data) {
     return consumer_data
 };
 
-
+// For Macro Dash
 function createHousingData(data) {
     let housing_data = [
         { category: 'Housing Market Value'
@@ -203,5 +384,3 @@ function createHousingData(data) {
 
     return housing_data
 }
-
-// restaurants_hotels = travel and hotels
