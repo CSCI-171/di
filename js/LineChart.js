@@ -1,9 +1,9 @@
 class LineChart {
 
-    constructor(_parentElement, _data) {
+    constructor(_parentElement, _data, _macroEventHandler) {
         this.parentElement = _parentElement;
         this.data = _data;
-        // this.eventHandler = _eventHandler;
+        this.macroEventHandler = _macroEventHandler;
 
         this.initVis();
     }
@@ -82,6 +82,35 @@ class LineChart {
                 .x(function(d) { return vis.x(d.date) })
                 .y(function(d) { return vis.y(d.gdp_yy_chg) })
             );
+
+        // Quarter time scale for brushing
+        const quarterScale = d3.scaleTime()
+            .domain(vis.x.domain())  // Use the same domain as xScale
+            .range(vis.x.range())
+            .nice(d3.timeQuarter);  // Quantize to quarters
+
+        vis.currentBrushRegion = null;
+        vis.brush = d3.brushX()
+            .extent([[0,0],[vis.width, vis.height]])
+            .on("brush", function (event) {
+                // User just selected a specific region
+                vis.currentBrushRegion = event.selection;
+
+                if (vis.currentBrushRegion) {
+                    // Quantize the brush selection to quarters
+                    vis.currentBrushRegion = vis.currentBrushRegion.map(quarterScale.invert);
+                    console.log(vis.currentBrushRegion);
+                }
+
+                // console.log(vis.currentBrushRegion);
+
+                // 3. Trigger the event 'selectionChanged' of our event handler
+                vis.macroEventHandler.trigger("selectionChanged", vis.currentBrushRegion);
+            });
+
+        vis.brushGroup = vis.svg.append("g")
+            .attr("class", "brush")
+            .call(vis.brush)
 
 
         // (Filter, aggregate, modify data)

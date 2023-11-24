@@ -11,55 +11,10 @@ class cBarChart {
     initVis() {
         let vis = this;
 
-        // Get market change values
-        // total_consumer_spending
-        //
-        // personal_gs
-        // food_bev
-        // health_gs
-        // medical_products
-        //
-        // restaurants_hotels
-        // eating_out
-        // clothing
-        // rec_cult
-        //
-        // household_expenditures
-        // household_appliances
-        // household_outdoor
-        // housing_maintenance
-
         // Create a new dataset with just these market change values
-        vis.market_change_data = [
-            { category: 'Total Consumer Spending'
-                , change: calculateMarketValueChange(vis.data, "total_consumer_spending") },
-            { category: 'Personal Care Goods and Services'
-                , change: calculateMarketValueChange(vis.data, "personal_gs") },
-            { category: 'Food and Non-Alcoholic Beverages'
-                , change: calculateMarketValueChange(vis.data, "food_bev") },
-            { category: 'Health Goods and Services'
-                , change: calculateMarketValueChange(vis.data, "health_gs") },
-            { category: 'Medical Products'
-                , change: calculateMarketValueChange(vis.data, "medical_products") },
-            { category: 'Travel and Hotels'
-                , change: calculateMarketValueChange(vis.data, "restaurants_hotels") },
-            { category: 'Eating Out'
-                , change: calculateMarketValueChange(vis.data, "eating_out") },
-            { category: 'Clothing and Footwear'
-                , change: calculateMarketValueChange(vis.data, "clothing") },
-            { category: 'Recreational'
-                , change: calculateMarketValueChange(vis.data, "rec_cult") },
-            { category: 'Household Furnishings'
-                , change: calculateMarketValueChange(vis.data, "household_expenditures") },
-            { category: 'Household Appliances'
-                , change: calculateMarketValueChange(vis.data, "household_appliances") },
-            { category: 'Household Garden Tools and Equipment'
-                , change: calculateMarketValueChange(vis.data, "household_outdoor") },
-            { category: 'Housing Maintenance and Repairs'
-                , change: calculateMarketValueChange(vis.data, "housing_maintenance") },
-        ];
+        vis.market_change_data = createConsumerData(vis.data);
 
-        console.log("vis.market_change_data: ", vis.market_change_data)
+        // console.log("vis.market_change_data: ", vis.market_change_data)
 
         vis.margin = { top: 40, right: 20, bottom: 60, left: 225 };
 
@@ -100,7 +55,7 @@ class cBarChart {
         // think about vis.x, may need to set some kind of static domain like [-100, 100]
         // vis.x.domain([d3.min(vis.market_change_data, d => d.change), d3.max(vis.market_change_data, d => d.change)]);
         vis.x.domain([-3000, 3000])
-        vis.y.domain(vis.market_change_data.map(d => d.category));
+        vis.y.domain(vis.market_change_data.map(d => d.category).reverse()); // reverse because I want Total at the top
 
         // Draw the bars
         vis.svg.selectAll(".bar")
@@ -110,13 +65,13 @@ class cBarChart {
             .attr("y", d => vis.y(d.category))
             .attr("height", vis.y.bandwidth())
             .attr("x", d => (d.change >= 0) ? vis.x(0) : vis.x(d.change))  // This code helps us get the bars to start at the 0 line
-            .attr("width", d => Math.abs(vis.x(0) - vis.x(d.change)));  
+            .attr("width", d => Math.abs(vis.x(0) - vis.x(d.change)));
 
-
-        vis.market_change_data.forEach(function (d) {
-            console.log("d.category: ", d.category)
-            console.log("width: ", vis.x(d.change))
-        })
+        //// For debugging
+        // vis.market_change_data.forEach(function (d) {
+        //     console.log("d.category: ", d.category)
+        //     console.log("width: ", vis.x(d.change))
+        // })
 
         // (Filter, aggregate, modify data)
         vis.wrangleData();
@@ -147,21 +102,40 @@ class cBarChart {
     updateVis() {
         let vis = this;
 
+        // Enter Update barcharts
+        vis.svg.selectAll(".bar")
+            .data(vis.market_change_data)
+            .enter().append("rect")
+            .merge(vis.svg.selectAll(".bar"))
+            .transition()
+            .duration(800)
+            .attr("class", "bar")
+            .attr("y", d => vis.y(d.category))
+            .attr("height", vis.y.bandwidth())
+            .attr("x", d => (d.change >= 0) ? vis.x(0) : vis.x(d.change))  // This code helps us get the bars to start at the 0 line
+            .attr("width", d => Math.abs(vis.x(0) - vis.x(d.change)));
+
+        // Exit barcharts
+        vis.svg.selectAll(".bar")
+            .data(vis.market_change_data)
+            .exit()
+            .remove();
+
         // Call axis functions with the new domain
         vis.svg.select(".x-axis").call(vis.xAxis);
         vis.svg.select(".y-axis").call(vis.yAxis);
     }
 
-    // onSelectionChange(selectionStart, selectionEnd) {
-    // let vis = this;
+    onSelectionChange(selectionStart, selectionEnd) {
+        let vis = this;
 
-    // Change the selected time range
-    // d3.select("#time-period-min").text(dateFormatter(selectionStart));
-    // d3.select("#time-period-max").text(dateFormatter(selectionEnd));
+        // Filter original unfiltered data depending on selected time period (brush)
+        vis.filteredData = vis.data.filter(function (d) {
+            return d.date >= selectionStart && d.date <= selectionEnd;
+        });
 
-    // // Not sure why the other way didn't work, but this way works for me!
-    // document.querySelector(".time-period-min").innerText = dateFormatter(selectionStart);
-    // document.querySelector(".time-period-max").innerText = dateFormatter(selectionEnd);
-
-    // }
+        // Create dataset but with new filtered data
+        vis.market_change_data = createConsumerData(vis.filteredData);
+        vis.wrangleData();
+    }
 }

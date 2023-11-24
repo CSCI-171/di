@@ -112,15 +112,15 @@ class AreaChart {
     wrangleData() {
         let vis = this;
 
-        // this.displayData = this.data;
+        this.displayData = this.data;
 
         // Create a new dataset with only date and mortgage rates
-        vis.displayData = vis.data.map(function (d) {
-            return {
-                date: d.date,
-                mortgage_rates: d.mortgage_rates
-            }
-        });
+        // vis.displayData = vis.data.map(function (d) {
+        //     return {
+        //         date: d.date,
+        //         mortgage_rates: d.mortgage_rates
+        //     }
+        // });
 
 
 
@@ -148,6 +148,9 @@ class AreaChart {
         // Update domains
         // vis.y.domain(d3.extent(vis.displayData));
         // Issue with above code is that it doesn't know what column to use (in this case, mortgage rates)
+        vis.x.domain(d3.extent(vis.displayData, function (d) {
+            return d.date
+        }));
         vis.y.domain(d3.extent(vis.displayData, function (d) {
             return d.mortgage_rates
         }));
@@ -159,6 +162,7 @@ class AreaChart {
             .datum(vis.displayData)
             // .data([vis.displayData])
             .transition()
+            .duration(800)
             .attr("d", vis.area);
 
         // Call axis functions with the new domain
@@ -166,16 +170,15 @@ class AreaChart {
         vis.svg.select(".y-axis").call(vis.yAxis);
     }
 
-    // onSelectionChange(selectionStart, selectionEnd) {
-    // let vis = this;
+    onSelectionChange(selectionStart, selectionEnd) {
+        let vis = this;
 
-    // Change the selected time range
-    // d3.select("#time-period-min").text(dateFormatter(selectionStart));
-    // d3.select("#time-period-max").text(dateFormatter(selectionEnd));
+        // Filter original unfiltered data depending on selected time period (brush)
+        vis.filteredData = vis.data.filter(function (d) {
+            return d.date >= selectionStart && d.date <= selectionEnd;
+        });
 
-    // // Not sure why the other way didn't work, but this way works for me!
-    // document.querySelector(".time-period-min").innerText = dateFormatter(selectionStart);
-    // document.querySelector(".time-period-max").innerText = dateFormatter(selectionEnd);
-
-    // }
+        vis.displayData = vis.filteredData
+        vis.updateVis();
+    }
 }

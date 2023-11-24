@@ -12,12 +12,7 @@ class hBarChart {
         let vis = this;
 
         // Create a new dataset with the market change values
-        vis.market_change_data = [
-            { category: 'Housing Market Value'
-                , change: calculateMarketValueChange(vis.data, "housing_market_value") },
-            { category: 'Residential Sales Price Index'
-                , change: calculateMarketValueChange(vis.data, "sale_price_index") },
-        ];
+        vis.market_change_data = createHousingData(vis.data);
 
         // console.log("vis.market_change_data: ", vis.market_change_data);
 
@@ -104,21 +99,41 @@ class hBarChart {
     updateVis() {
         let vis = this;
 
+        // Enter update barcharts
+        vis.svg.selectAll(".bar")
+            .data(vis.market_change_data)
+            .enter().append("rect")
+            .merge(vis.svg.selectAll(".bar"))
+            .transition()
+            .duration(800)
+            .attr("class", "bar")
+            .attr("x", d => vis.x(d.category))
+            .attr("width", vis.x.bandwidth())
+            .attr("y", d => vis.y(d.change))
+            .attr("height", d => vis.height - vis.y(d.change));
+
+
+        // Exit barcharts
+        vis.svg.selectAll(".bar")
+            .data(vis.market_change_data)
+            .exit()
+            .remove();
+
         // Call axis functions with the new domain
         vis.svg.select(".x-axis").call(vis.xAxis);
         vis.svg.select(".y-axis").call(vis.yAxis);
     }
 
-    // onSelectionChange(selectionStart, selectionEnd) {
-    // let vis = this;
+    onSelectionChange(selectionStart, selectionEnd) {
+        let vis = this;
 
-    // Change the selected time range
-    // d3.select("#time-period-min").text(dateFormatter(selectionStart));
-    // d3.select("#time-period-max").text(dateFormatter(selectionEnd));
+        // Filter original unfiltered data depending on selected time period (brush)
+        vis.filteredData = vis.data.filter(function (d) {
+            return d.date >= selectionStart && d.date <= selectionEnd;
+        });
 
-    // // Not sure why the other way didn't work, but this way works for me!
-    // document.querySelector(".time-period-min").innerText = dateFormatter(selectionStart);
-    // document.querySelector(".time-period-max").innerText = dateFormatter(selectionEnd);
-
-    // }
+        // Create dataset but with new filtered data
+        vis.market_change_data = createHousingData(vis.filteredData);
+        vis.wrangleData();
+}
 }
