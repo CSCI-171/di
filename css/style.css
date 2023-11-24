@@ -2,6 +2,10 @@
 /* General CSS  */
 /****************/
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: Arial, sans-serif;
   font-size: 16px;
@@ -34,9 +38,36 @@ h3 {
 }
 
 .custom-container-box {
-  padding: 20px 50px 20px 70px;
+  padding: 10px;
+  border-radius: 25px;
   background-color: rgba(0, 0, 0, 0.2);
-  height: 100%;
+  height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dot-navigation {
+  position: fixed;
+  right: 18px; /* Adjust as needed */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.dot-navigation .dot {
+  display: block;
+  height: 10px; /* Dot size */
+  width: 10px;  /* Dot size */
+  background-color: #ffffff; /* Dot color */
+  border-radius: 50%;
+  margin-bottom: 10px; /* Space between dots */
+  transition: background-color 0.3s;
+}
+
+.dot-navigation .dot.active,
+.dot-navigation .dot:hover,
+.dot-navigation .dot:focus {
+  background-color: #941010; /* Active dot color */
 }
 
 .scroll-container {
@@ -46,8 +77,9 @@ h3 {
 }
 
 .scroll-section {
+  height: 100vh;
+  width: 100vw;
   scroll-snap-align: start;
-  min-height: 100vh; /* Ensures each section takes at least full viewport height */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -56,6 +88,7 @@ h3 {
 
 .scroll-section .container-fluid {
   height: 100%;
+  width: 100%;
 }
 
 .source {
@@ -130,7 +163,7 @@ h3 {
 }
 
 #recommendation{
-  /*background-image: url(../img/intro.jpg);*/
+  background-image: url(../img/Downtown_Ottawa_2022.jpg);
   background-color: #999aa0;
   background-size: cover;
   background-attachment: fixed;
@@ -147,6 +180,24 @@ h3 {
 /*  Macro  Viz  */
 /****************/
 
+
+.vis-container {
+  border: 1px solid #ff0000; /* Example border for visualization area */
+  padding: 1px;
+  background-color: #f9f9f9; /* Light background for the content area */
+  width: 100%; /* Use percentage for responsive width */
+  max-height: 300px; /* Example max height */
+  margin-bottom: 10px; /* Spacing between visualizations */
+  overflow: hidden; /* Prevents content from overflowing */
+}
+
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+  .vis-container {
+    max-height: 100px; /* Smaller max height for small screens */
+  }
+}
 /****************/
 /*  Perf   Viz  */
 /****************/
@@ -330,12 +381,12 @@ th {
 }
 
 .sector-icon {
-  fill: #d21313;
+  fill: #941010;
   margin: 50px;
-  width: 150px; /* Adjust as necessary */
-  height: 150px; /* Adjust as necessary */
+  width: 150px;
+  height: 150px;
   position: absolute;
-  /* Use top and left to position each icon appropriately */
+
 }
 
 #industrial {
@@ -359,3 +410,70 @@ th {
 }
 
 #map { height: 180px; }
+
+
+/*****************/
+/*Recommendations*/
+/*****************/
+
+.investment-categories {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.category {
+  flex: 1;
+  margin: 0 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category h2 {
+  background-color: rgba(42, 145, 46, 0.9); /* Green for 'Buy' */
+  color: white;
+  text-align: center;
+  margin: -20px -20px 20px;
+  padding: 10px 0;
+  border-radius: 5px 5px 0 0;
+}
+
+.category.hold h2 {
+  background-color: rgb(231, 157, 19, 0.9); /* Yellow for 'Hold' */
+}
+
+.category.sell h2 {
+  background-color: rgb(148, 16, 16, 0.9); /* Red for 'Sell' */
+}
+
+@media (max-width: 768px) {
+  .investment-categories {
+    flex-direction: column;
+  }
+  .category {
+    margin-bottom: 20px;
+  }
+}
+
+.category ul {
+  list-style-type: square;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.category li {
+  margin-bottom: 10px;
+  text-align: left;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+
+.category strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #333;
+  font-weight: bold;
+}
