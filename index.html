@@ -9,6 +9,7 @@
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
           integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link href='https://fonts.googleapis.com/css?family=Vina Sans' rel='stylesheet'>
 </head>
 <body>
@@ -148,6 +149,9 @@
                 <div class="row">
                     <h1>What is VECTOM?</h1>
                 </div>
+                <div class="row">
+                    <div id="map" style="height: 400px;"></div>
+                </div>
             </div>
         </div>
     </section>
@@ -183,7 +187,7 @@
 <!--                    </div>-->
 <!--                </div>-->
                 <!-- Timeline Container -->
-                <div class="row">
+                <div class="row" id="visualization-container">
                     <div class="col" id="brushDiv" style="height: 18vh; background: #bdbdbd;">
                         <!-- Timeline visualization will be loaded here -->
                     </div>
@@ -278,7 +282,7 @@
 <script crossorigin="anonymous"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
-<!-------------------------------------------------------------------------------------------------->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -292,21 +296,17 @@
 
 <!--==============================================================================================-->
 <!-- Team JS Files -->
-<script src="js/datamaps.can.min.js"></script>
 <script src="js/bubble.js"></script>
-
 <script src="js/LineChart.js"></script>
 <script src="js/cBarChart.js"></script>
 <script src="js/hBarChart.js"></script>
 <script src="js/AreaChart.js"></script>
-<script src="js/canadaMap.js"></script>
+<script src="js/vectom.js"></script>
 <script src="js/industrialVis.js"></script>
 <script src="js/multifamilyVis.js"></script>
 <script src="js/retailVis.js"></script>
 <script src="js/officeVis.js"></script>
 <script src="js/brushVis.js"></script>
-<!--<script src="js/mainEK.js"></script>-->
-<!--<script src="js/mainJS.js"></script>-->
 <script src="js/main.js"></script>
 
 <!--==============================================================================================-->
