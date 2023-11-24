@@ -182,9 +182,10 @@ h3 {
 
 
 .vis-container {
-  border: 1px solid #ff0000; /* Example border for visualization area */
+  /*border: 1px solid #ff0000; !* Example border for visualization area *!*/
   padding: 1px;
-  background-color: #f9f9f9; /* Light background for the content area */
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.25); /* Light background for the content area */
   width: 100%; /* Use percentage for responsive width */
   max-height: 300px; /* Example max height */
   margin-bottom: 10px; /* Spacing between visualizations */
@@ -409,7 +410,9 @@ th {
   right: 10px;
 }
 
-#map { height: 180px; }
+#map {
+  height: 50%;
+}
 
 
 /*****************/
