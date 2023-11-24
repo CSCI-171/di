@@ -64,7 +64,7 @@ class cBarChart {
         vis.margin = { top: 40, right: 0, bottom: 60, left: 60 };
 
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right,
-            vis.height = 300 - vis.margin.top - vis.margin.bottom;
+            vis.height = 662.5 - vis.margin.top - vis.margin.bottom;
 
         // SVG drawing area
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
@@ -74,18 +74,19 @@ class cBarChart {
             .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
         // Scales and axes
-        vis.x = d3.scaleBand()
-            .range([0, vis.width]).padding(0.1);
 
-        vis.y = d3.scaleLinear()
-            .range([vis.height, 0]);
+        vis.x = d3.scaleLinear()
+            .range([0, vis.width]);
+
+        vis.y = d3.scaleBand()
+            .range([vis.height, 0]).padding(0.1);
 
         vis.xAxis = d3.axisBottom()
             .scale(vis.x);
 
         vis.yAxis = d3.axisLeft()
             .scale(vis.y)
-            .ticks(6);
+            // .ticks(13);
 
         vis.svg.append("g")
             .attr("class", "x-axis axis")
@@ -96,19 +97,18 @@ class cBarChart {
 
         // TODO might need to move this down to updatevis later? or maybe it's fine here...
         // Scale the range of the data
-        vis.x.domain(vis.market_change_data.map(d => d.category));
-        vis.y.domain([0, d3.max(vis.market_change_data, d => d.change)]);
+        vis.x.domain([d3.min(vis.market_change_data, d => d.change), d3.max(vis.market_change_data, d => d.change)]);
+        vis.y.domain(vis.market_change_data.map(d => d.category));
 
         // Draw the bars
         vis.svg.selectAll(".bar")
             .data(vis.market_change_data)
             .enter().append("rect")
             .attr("class", "bar")
-            .attr("x", d => vis.x(d.category))
-            .attr("width", vis.x.bandwidth())
-            .attr("y", d => vis.y(d.change))
-            .attr("height", d => vis.height - vis.y(d.change));
-
+            .attr("y", d => vis.y(d.category))
+            .attr("height", vis.y.bandwidth())
+            .attr("x", 0)
+            .attr("width", d => vis.x(d.change));
 
         // (Filter, aggregate, modify data)
         vis.wrangleData();

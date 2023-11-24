@@ -76,7 +76,7 @@ class LineChart {
         vis.svg.append("path")
             .datum(vis.data)
             .attr("fill", "none")
-            .attr("stroke", "steelblue")
+            .attr("stroke", "black")
             .attr("stroke-width", 1.5)
             .attr("d", d3.line()
                 .x(function(d) { return vis.x(d.date) })
