@@ -11,9 +11,14 @@ class hBarChart {
     initVis() {
         let vis = this;
 
+        // Create a new dataset with the market change values
+        vis.market_change_data = createHousingData(vis.data);
+
+        // console.log("vis.market_change_data: ", vis.market_change_data);
+
         vis.margin = { top: 40, right: 0, bottom: 60, left: 60 };
 
-        vis.width = 400 - vis.margin.left - vis.margin.right,
+        vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right,
             vis.height = 300 - vis.margin.top - vis.margin.bottom;
 
         // SVG drawing area
@@ -24,8 +29,8 @@ class hBarChart {
             .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
         // Scales and axes
-        vis.x = d3.scaleTime()
-            .range([0, vis.width]);
+        vis.x = d3.scaleBand()
+            .range([0, vis.width]).padding(0.1);
 
         vis.y = d3.scaleLinear()
             .range([vis.height, 0]);
@@ -36,13 +41,6 @@ class hBarChart {
         vis.yAxis = d3.axisLeft()
             .scale(vis.y)
             .ticks(6);
-
-        // Set domains by finding the min and max of both the X and Y
-        let minMaxX = d3.extent(vis.data.map(function (d) { return d.date; }));
-        vis.x.domain(minMaxX);
-
-        let minMaxY = [0, d3.max(vis.data.map(function (d) { return d.gdp_yy_chg; }))];
-        vis.y.domain(minMaxY);
 
         vis.svg.append("g")
             .attr("class", "x-axis axis")
@@ -57,15 +55,20 @@ class hBarChart {
         //     .attr("y", -8)
         //     .text("Votes");
 
-        // Append a path for the line
-        vis.line = d3.line()
-            .x(d => vis.x(d.date))
-            .y(d => vis.y(d.gdp_yy_chg));
+        // TODO might need to move this down to updatevis later? or maybe it's fine here...
+        // Scale the range of the data
+        vis.x.domain(vis.market_change_data.map(d => d.category));
+        vis.y.domain([0, d3.max(vis.market_change_data, d => d.change)]);
 
-        vis.svg.append("path")
-            .datum(vis.data)
-            .attr("class", "line")
-            .attr("d", vis.line);
+        // Draw the bars
+        vis.svg.selectAll(".bar")
+            .data(vis.market_change_data)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", d => vis.x(d.category))
+            .attr("width", vis.x.bandwidth())
+            .attr("y", d => vis.y(d.change))
+            .attr("height", d => vis.height - vis.y(d.change));
 
         // (Filter, aggregate, modify data)
         vis.wrangleData();
@@ -96,21 +99,41 @@ class hBarChart {
     updateVis() {
         let vis = this;
 
+        // Enter update barcharts
+        vis.svg.selectAll(".bar")
+            .data(vis.market_change_data)
+            .enter().append("rect")
+            .merge(vis.svg.selectAll(".bar"))
+            .transition()
+            .duration(800)
+            .attr("class", "bar")
+            .attr("x", d => vis.x(d.category))
+            .attr("width", vis.x.bandwidth())
+            .attr("y", d => vis.y(d.change))
+            .attr("height", d => vis.height - vis.y(d.change));
+
+
+        // Exit barcharts
+        vis.svg.selectAll(".bar")
+            .data(vis.market_change_data)
+            .exit()
+            .remove();
+
         // Call axis functions with the new domain
         vis.svg.select(".x-axis").call(vis.xAxis);
         vis.svg.select(".y-axis").call(vis.yAxis);
     }
 
-    // onSelectionChange(selectionStart, selectionEnd) {
-    // let vis = this;
+    onSelectionChange(selectionStart, selectionEnd) {
+        let vis = this;
 
-    // Change the selected time range
-    // d3.select("#time-period-min").text(dateFormatter(selectionStart));
-    // d3.select("#time-period-max").text(dateFormatter(selectionEnd));
+        // Filter original unfiltered data depending on selected time period (brush)
+        vis.filteredData = vis.data.filter(function (d) {
+            return d.date >= selectionStart && d.date <= selectionEnd;
+        });
 
-    // // Not sure why the other way didn't work, but this way works for me!
-    // document.querySelector(".time-period-min").innerText = dateFormatter(selectionStart);
-    // document.querySelector(".time-period-max").innerText = dateFormatter(selectionEnd);
-
-    // }
+        // Create dataset but with new filtered data
+        vis.market_change_data = createHousingData(vis.filteredData);
+        vis.wrangleData();
+}
 }

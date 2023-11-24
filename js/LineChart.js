@@ -1,9 +1,9 @@
 class LineChart {
 
-    constructor(_parentElement, _data) {
+    constructor(_parentElement, _data, _macroEventHandler) {
         this.parentElement = _parentElement;
         this.data = _data;
-        // this.eventHandler = _eventHandler;
+        this.macroEventHandler = _macroEventHandler;
 
         this.initVis();
     }
@@ -13,8 +13,10 @@ class LineChart {
 
         vis.margin = { top: 40, right: 0, bottom: 60, left: 60 };
 
-        vis.width = 1000 - vis.margin.left - vis.margin.right,
+        vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right,
             vis.height = 300 - vis.margin.top - vis.margin.bottom;
+        // vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
+
 
         // SVG drawing area
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
@@ -42,7 +44,7 @@ class LineChart {
         vis.x.domain(minMaxX);
 
         let minMaxY = [d3.min(vis.data.map(function (d) { return d.gdp_yy_chg; })),
-                             d3.max(vis.data.map(function (d) { return d.gdp_yy_chg; }))];
+            d3.max(vis.data.map(function (d) { return d.gdp_yy_chg; }))];
 
         vis.y.domain(minMaxY);
 
@@ -74,12 +76,41 @@ class LineChart {
         vis.svg.append("path")
             .datum(vis.data)
             .attr("fill", "none")
-            .attr("stroke", "steelblue")
+            .attr("stroke", "black")
             .attr("stroke-width", 1.5)
             .attr("d", d3.line()
                 .x(function(d) { return vis.x(d.date) })
                 .y(function(d) { return vis.y(d.gdp_yy_chg) })
             );
+
+        // Quarter time scale for brushing
+        const quarterScale = d3.scaleTime()
+            .domain(vis.x.domain())  // Use the same domain as xScale
+            .range(vis.x.range())
+            .nice(d3.timeQuarter);  // Quantize to quarters
+
+        vis.currentBrushRegion = null;
+        vis.brush = d3.brushX()
+            .extent([[0,0],[vis.width, vis.height]])
+            .on("brush", function (event) {
+                // User just selected a specific region
+                vis.currentBrushRegion = event.selection;
+
+                if (vis.currentBrushRegion) {
+                    // Quantize the brush selection to quarters
+                    vis.currentBrushRegion = vis.currentBrushRegion.map(quarterScale.invert);
+                    console.log(vis.currentBrushRegion);
+                }
+
+                // console.log(vis.currentBrushRegion);
+
+                // 3. Trigger the event 'selectionChanged' of our event handler
+                vis.macroEventHandler.trigger("selectionChanged", vis.currentBrushRegion);
+            });
+
+        vis.brushGroup = vis.svg.append("g")
+            .attr("class", "brush")
+            .call(vis.brush)
 
 
         // (Filter, aggregate, modify data)
@@ -135,15 +166,15 @@ class LineChart {
     }
 
     // onSelectionChange(selectionStart, selectionEnd) {
-        // let vis = this;
+    // let vis = this;
 
-        // Change the selected time range
-        // d3.select("#time-period-min").text(dateFormatter(selectionStart));
-        // d3.select("#time-period-max").text(dateFormatter(selectionEnd));
+    // Change the selected time range
+    // d3.select("#time-period-min").text(dateFormatter(selectionStart));
+    // d3.select("#time-period-max").text(dateFormatter(selectionEnd));
 
-        // // Not sure why the other way didn't work, but this way works for me!
-        // document.querySelector(".time-period-min").innerText = dateFormatter(selectionStart);
-        // document.querySelector(".time-period-max").innerText = dateFormatter(selectionEnd);
+    // // Not sure why the other way didn't work, but this way works for me!
+    // document.querySelector(".time-period-min").innerText = dateFormatter(selectionStart);
+    // document.querySelector(".time-period-max").innerText = dateFormatter(selectionEnd);
 
     // }
 }

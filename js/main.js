@@ -75,7 +75,7 @@ Promise.all(promises)
                         personal_gs: +row['Consumer spending, nominal, LCU - Personal care goods and services'],
                         // personal_transport: +row['Consumer spending, nominal, LCU - Personal transport running costs'],
                         rec_cult: +row['Consumer spending, nominal, LCU - Recreational and cultural goods and services - Total'],
-                        restaurants_hotels: +row['Consumer spending, nominal, LCU - Restaurants and hotels - Total'],
+                        restaurants_hotels: +row['Consumer spending, nominal, LCU - Restaurants and hotels  - Total'],
                         // household_gs: +row['Consumer spending, nominal, LCU - Routine household maintenance goods and services'],
                         // telephone_equip: +row['Consumer spending, nominal, LCU - Telephone equipment'],
                         // telephone_serv: +row['Consumer spending, nominal, LCU - Telephone services'],
@@ -125,10 +125,29 @@ function initMainPage(dataArray) {
     console.log("consumer_data: ", consumer_data)
     console.log("housing_data: ", housing_data)
 
-    macroChart = new LineChart("macro_vis", macro_data)
+    let macroEventHandler = {
+        bind: (eventName, handler) => {
+            document.body.addEventListener(eventName, handler);
+        },
+        trigger: (eventName, extraParameters) => {
+            document.body.dispatchEvent(new CustomEvent(eventName, {
+                detail: extraParameters
+            }));
+        }
+    }
+
+    macroChart = new LineChart("macro_vis", macro_data, macroEventHandler)
     consumerChart = new cBarChart("consumer_vis", consumer_data)
     housingChart = new hBarChart("housing_vis", housing_data)
     mortgageChart = new AreaChart("mortgage_vis", housing_data)
+
+    macroEventHandler.bind("selectionChanged", function(event){
+        let rangeStart = event.detail[0];
+        let rangeEnd = event.detail[1];
+        consumerChart.onSelectionChange(rangeStart, rangeEnd);
+        housingChart.onSelectionChange(rangeStart, rangeEnd);
+        mortgageChart.onSelectionChange(rangeStart, rangeEnd);
+    });
 
 
     // Initialize map
@@ -282,4 +301,86 @@ function initMainPage(dataArray) {
             });
         });
     });
+}
+
+// For Macro Dash
+function calculateMarketValueChange(data, selectedColumn) {
+    // Filter out rows with NA values for 'Market value of housing stock'
+    const filteredData = data.filter(d => !isNaN(d[selectedColumn]));
+
+    //// For debugging purposes
+    // data.forEach(function (d,i) {
+    //     console.log("index: ", i)
+    //     console.log("selectedColumn: ", selectedColumn)
+    //     console.log("d[selectedColumn]: ", d[selectedColumn])
+    //     console.log("!isNaN(d[selectedColumn]): ", !isNaN(d[selectedColumn]))
+    // });
+
+    // console.log("data: ", data)
+    // console.log("selectedColumn: ", selectedColumn)
+    // console.log("filteredData: ", filteredData)
+    // Find the minimum and maximum dates
+    const minDate = d3.min(filteredData, d => new Date(d.date));
+    const maxDate = d3.max(filteredData, d => new Date(d.date));
+    // console.log("minDate: ", minDate)
+    // console.log("maxDate: ", maxDate)
+
+    // Find the market value at the minimum and maximum dates
+    const minValue = filteredData.find(d => new Date(d.date).getTime() === minDate.getTime())[selectedColumn];
+    const maxValue = filteredData.find(d => new Date(d.date).getTime() === maxDate.getTime())[selectedColumn];
+    // console.log("minDate: ", minValue)
+    // console.log("maxDate: ", maxValue)
+
+    // Calculate the percentage change
+    const percentageChange = ((maxValue / minValue) - 1);
+    // console.log("percentageChange: ", percentageChange)
+
+    // console.log("percentageChange: ", percentageChange)
+    return percentageChange;
+}
+
+// For Macro Dash
+function createConsumerData(data) {
+    let consumer_data = [
+        { category: 'Total Consumer Spending'
+            , change: calculateMarketValueChange(data, "total_consumer_spending") },
+        { category: 'Personal Care Goods and Services'
+            , change: calculateMarketValueChange(data, "personal_gs") },
+        { category: 'Food and Non-Alcoholic Beverages'
+            , change: calculateMarketValueChange(data, "food_bev") },
+        { category: 'Health Goods and Services'
+            , change: calculateMarketValueChange(data, "health_gs") },
+        { category: 'Medical Products'
+            , change: calculateMarketValueChange(data, "medical_products") },
+        { category: 'Travel and Hotels'
+            , change: calculateMarketValueChange(data, "restaurants_hotels") },
+        { category: 'Eating Out'
+            , change: calculateMarketValueChange(data, "eating_out") },
+        { category: 'Clothing and Footwear'
+            , change: calculateMarketValueChange(data, "clothing") },
+        { category: 'Recreational'
+            , change: calculateMarketValueChange(data, "rec_cult") },
+        { category: 'Household Furnishings'
+            , change: calculateMarketValueChange(data, "household_expenditures") },
+        { category: 'Household Appliances'
+            , change: calculateMarketValueChange(data, "household_appliances") },
+        { category: 'Household Garden Tools and Equipment'
+            , change: calculateMarketValueChange(data, "household_outdoor") },
+        { category: 'Housing Maintenance and Repairs'
+            , change: calculateMarketValueChange(data, "housing_maintenance") },
+    ];
+
+    return consumer_data
+};
+
+// For Macro Dash
+function createHousingData(data) {
+    let housing_data = [
+        { category: 'Housing Market Value'
+            , change: calculateMarketValueChange(data, "housing_market_value") },
+        { category: 'Residential Sales Price Index'
+            , change: calculateMarketValueChange(data, "sale_price_index") },
+    ];
+
+    return housing_data
 }

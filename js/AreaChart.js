@@ -13,7 +13,7 @@ class AreaChart {
 
         vis.margin = { top: 40, right: 0, bottom: 60, left: 60 };
 
-        vis.width = 400 - vis.margin.left - vis.margin.right,
+        vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right,
             vis.height = 300 - vis.margin.top - vis.margin.bottom;
 
         // SVG drawing area
@@ -42,7 +42,7 @@ class AreaChart {
         vis.x.domain(minMaxX);
 
         let minMaxY = [d3.min(vis.data.map(function (d) { return d.mortgage_rates; })),
-                             d3.max(vis.data.map(function (d) { return d.mortgage_rates; }))];
+            d3.max(vis.data.map(function (d) { return d.mortgage_rates; }))];
         vis.y.domain(minMaxY);
 
         vis.svg.append("g")
@@ -58,15 +58,46 @@ class AreaChart {
         //     .attr("y", -8)
         //     .text("Votes");
 
-        // Append a path for the line
-        vis.line = d3.line()
-            .x(d => vis.x(d.date))
-            .y(d => vis.y(d.mortgage_rates));
+        // // Append a path for the line
+        // vis.line = d3.line()
+        //     .x(d => vis.x(d.date))
+        //     .y(d => vis.y(d.mortgage_rates));
+        //
+        // vis.svg.append("path")
+        //     .datum(vis.data)
+        //     .attr("class", "line")
+        //     .attr("d", vis.line);
 
-        vis.svg.append("path")
-            .datum(vis.data)
-            .attr("class", "line")
-            .attr("d", vis.line);
+        // Append a path for the area function, so that it is later behind the brush overlay
+        vis.ratePath = vis.svg.append("path")
+            .attr("class", "area");
+
+        // Define the D3 path generator
+        vis.area = d3.area()
+            .x(function (d) { return vis.x(d.date); })
+            .y0(vis.height)
+            .y1(function (d) { return vis.y(d.mortgage_rates); });
+
+        vis.area.curve(d3.curveCardinal);
+
+        // Append axes
+        vis.svg.append("g")
+            .attr("class", "x-axis axis")
+            .attr("transform", "translate(0," + vis.height + ")");
+
+        vis.svg.append("g")
+            .attr("class", "y-axis axis");
+
+        // TODO fix up the axes titles...
+        // // Axis titles
+        // vis.svg.append("text")
+        //     .attr("x", -50)
+        //     .attr("y", -8)
+        //     .text("Votes");
+        // vis.svg.append("text")
+        //     .attr("x", vis.width - 10)
+        //     .attr("y", vis.height + 25)
+        //     .text("Age");
 
         // (Filter, aggregate, modify data)
         vis.wrangleData();
@@ -83,6 +114,16 @@ class AreaChart {
 
         this.displayData = this.data;
 
+        // Create a new dataset with only date and mortgage rates
+        // vis.displayData = vis.data.map(function (d) {
+        //     return {
+        //         date: d.date,
+        //         mortgage_rates: d.mortgage_rates
+        //     }
+        // });
+
+
+
         // Update the visualization
         vis.updateVis();
     }
@@ -97,21 +138,47 @@ class AreaChart {
     updateVis() {
         let vis = this;
 
+        // vis.x.domain(d3.extent(vis.preProcessedData, function (d) {
+        //     return d.date
+        // }));
+        // vis.y.domain(d3.extent(vis.preProcessedData, function (d) {
+        //     return d.newCases
+        // }));
+
+        // Update domains
+        // vis.y.domain(d3.extent(vis.displayData));
+        // Issue with above code is that it doesn't know what column to use (in this case, mortgage rates)
+        vis.x.domain(d3.extent(vis.displayData, function (d) {
+            return d.date
+        }));
+        vis.y.domain(d3.extent(vis.displayData, function (d) {
+            return d.mortgage_rates
+        }));
+
+        // Call the area function and update the path
+        // D3 uses each data point and passes it to the area function.
+        // The area function translates the data into positions on the path in the SVG.
+        vis.ratePath
+            .datum(vis.displayData)
+            // .data([vis.displayData])
+            .transition()
+            .duration(800)
+            .attr("d", vis.area);
+
         // Call axis functions with the new domain
         vis.svg.select(".x-axis").call(vis.xAxis);
         vis.svg.select(".y-axis").call(vis.yAxis);
     }
 
-    // onSelectionChange(selectionStart, selectionEnd) {
-    // let vis = this;
+    onSelectionChange(selectionStart, selectionEnd) {
+        let vis = this;
 
-    // Change the selected time range
-    // d3.select("#time-period-min").text(dateFormatter(selectionStart));
-    // d3.select("#time-period-max").text(dateFormatter(selectionEnd));
+        // Filter original unfiltered data depending on selected time period (brush)
+        vis.filteredData = vis.data.filter(function (d) {
+            return d.date >= selectionStart && d.date <= selectionEnd;
+        });
 
-    // // Not sure why the other way didn't work, but this way works for me!
-    // document.querySelector(".time-period-min").innerText = dateFormatter(selectionStart);
-    // document.querySelector(".time-period-max").innerText = dateFormatter(selectionEnd);
-
-    // }
+        vis.displayData = vis.filteredData
+        vis.updateVis();
+    }
 }
