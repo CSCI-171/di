@@ -1,21 +1,16 @@
-# Design Invest Team CSCI-171 Fall 2023
+## Design Invest Team CSCI-171 Fall 2023
 
 To view live website [click here!](https://csci-171.github.io/di/)
 
 **CS171 Design Sprint Process Book**
 
-# WEEK 7
+## **PROJECT NAME: Invest Real Estate**
 
-
-# **PROJECT NAME:**
-
-# Invest Real Estate
-
-# **ABSTRACT:**
+## **ABSTRACT:**
 
 The team will design a web visualization project of 10-14 interactive slides which would provide our audience a deep understanding of the recent movement patterns in critical macroeconomic variables (e.g., inflation, interest rates, GDP) and how they are affecting the investment performance and growth outlook for four commercial real estate sectors (residential, industrial, office and retail).
 
-# **MOTIVATION AND PROBLEM STATEMENT**
+## **MOTIVATION AND PROBLEM STATEMENT**
 
 Since the start of the global pandemic in early 2020, major macroeconomic movements have affected the global real estate economy in ways that would be evident and persistent for the next three to five years. Consider the volatility in residential asset prices as a result of falling and rising mortgage rates or the impact of hybrid work arrangements on the demand for office buildings. Multi-billion dollar real estate funds  devote a large part of their resources in researching and understanding these macroeconomic events to understand the effects on their portfolio as well as to allocate their buy and sell actions.
 
@@ -23,10 +18,10 @@ Our motivation to pursue this project stems from a desire and need to educate bo
 
 We have also been able to procure a private equity company’s data that they are willing to let us use publically for our project. We will dedicate at least one full section of our visualization on presenting visualization as seen from the lens of a real private equity real estate fund.
 
-# WEEK 8
+## WEEK 8
 
 
-# **TEAM AGREEMENT**
+## **TEAM AGREEMENT**
 
 * We will coordinate the project design and development using the Slack group we have set up. We will conduct regular day-to-day communications through our team WhatsApp group.
 
@@ -47,7 +42,7 @@ We have also been able to procure a private equity company’s data that they ar
 * **Signatures:** Elizabeth Koch, Jessica Gochioco, Naina Garg
 * **Date:** October 30, 2023
 
-# **PROJECT DETAILS**
+## **PROJECT DETAILS**
 
 * **Project Title:** Invest Real Estate
 * **Team Name:** Design Invest
@@ -61,7 +56,7 @@ We have also been able to procure a private equity company’s data that they ar
 
 **<u></u>**
 
-# **DETAILED PROJECT PLAN**
+## **DETAILED PROJECT PLAN**
 
 * **<u>Macroeconomic Themes:</u>**
     * **GDP Growth**
@@ -129,7 +124,7 @@ One or two slides with some of the following takeaways:
     2. **Self-Storage:** Data is available but should we include this?
 * **Office:** Show flight-to-quality
 
-# **DATA AND DATA CLEANUP**:
+## **DATA AND DATA CLEANUP**:
 
 We are currently in the process of data collection.
 
@@ -138,7 +133,7 @@ We are currently in the process of data collection.
 
 The extent of data cleaning required may vary based on the datasets we choose to include in the project. However, given our previous and current experience in real estate economics, we do not expect this step of the project to be overly complex or even significantly time consuming. In the interest of proactive time management, we will, however, restrict ourselves to November 6 as our deadline for producing the final ready-to-deploy cleaned datasets.
 
-# **EXAMPLE DATA SOURCES:**
+## **EXAMPLE DATA SOURCES:**
 
 **Inflation**
 
@@ -171,10 +166,10 @@ The extent of data cleaning required may vary based on the datasets we choose to
 * **Retail**: Grocery-anchored [https://www.matthews.com/grocery-anchored-retail/](https://www.matthews.com/grocery-anchored-retail/)
 * **Residential**: Mutlifamily [https://multifamily.fanniemae.com/news-insights/multifamily-market-commentary/2023-multifamily-market-outlook-turbulence-ahead](https://multifamily.fanniemae.com/news-insights/multifamily-market-commentary/2023-multifamily-market-outlook-turbulence-ahead)
 
-# WEEK 9
+## WEEK 9
 
 
-# **PROJECT MAP:**
+## **PROJECT MAP:**
 
 **Audience**
 
@@ -237,7 +232,7 @@ Here we show our more than 10 questions bucketed under some of our major ideas:
 
 1. **Screenshots:** Here are some screenshots of our data folders:
 
-# **DATA VISUALIZATION WITH TABLEAU:**
+## **DATA VISUALIZATION WITH TABLEAU:**
 
 
 **Naina Garg**
@@ -262,10 +257,10 @@ My Tableau visualizations evolved from the team's broader questions to focus on 
 
 This was an interesting experience to go through. The reason why my graphs differ from our questions is because although our ideas have no limit, what I could actually create and visualize is bounded by our data. I may have wanted to make comparisons between the four different sectors, but sometimes we’d be missing data for a sector so I would settle for just comparing two, like in the first graph. In the second graph, I was able to keep with the theme of helping investors with sector-based recommendations, but I deviated with the third graph because I found the staggering difference between renting and owning to be very powerful and really wanted to integrate it.
 
-# WEEK 10
+## WEEK 10
 
 
-# **SKETCHES** AND **QUESTIONS:**
+## **SKETCHES** AND **QUESTIONS:**
 
 **Naina Garg**
 
@@ -314,7 +309,7 @@ Sketch 5) **[2.3]**
 
 **Is volatility in interest rates (and subsequently mortgage rates) a deterrence to real estate investment sentiment?**
 ![](img/Sketch+Section-8.jpg)![](img/Sketch+Section-9.jpg)
-# VOTE AND **DECIDE :**
+## VOTE AND **DECIDE :**
 
 
 | <!----> | <!----> | <!----> | <!----> |
@@ -339,7 +334,7 @@ Sketch 5) **[2.3]**
 
 During voting, we prioritized visualizations that had interactivity, were simple and to the point, and showed data in a novel way. Although the instructions said to target only 4-6 visualizations, we plan on combining our choices into three separate themes (i.e., dashboards). Each team member’s 4-5 visualizations are based on one of the three themes and would be part of the one of the three dashboards based on the theme; each visualization in our three dashboards will be unique in terms of visual presentation and design.
 
-# INSIGHTS:
+## INSIGHTS:
 
 
 **Naina Garg**
@@ -364,11 +359,11 @@ During voting, we prioritized visualizations that had interactivity, were simple
 * **We expect mortgage rates to stay higher:-** During COVID, we saw mortgage rates plummet as the Fed tried to keep the economy afloat, but we might not see rates that low ever again. This had a huge impact on housing, as housing prices have also skyrocketed.
 * **Consumer spending is on the rise:** While we combat inflation and grapple with a recession, we also see that consumer spending is on the rise. This may be because so many Millennials who would’ve been buying housing can’t afford to do so, and so they shift their dollars to enjoy their present lives.
 
-# 
+## 
 
-# STORYBOARDING:
+## STORYBOARDING:
 
-## **Main message**
+### **Main message**
 
 Canadian commercial real estate is poised for significant growth in the post-pandemic era, fueled by evolving consumer behaviors and regional population growth.
 
@@ -380,10 +375,10 @@ The storyboard we've crafted aims to succinctly yet comprehensively convey these
 
 ## **STORYBOARD SKETCH**
 
-# WEEK 11 
+## WEEK 11 
 
 
-# PROTOTYPE 1:
+## PROTOTYPE 1:
 
 * **Name of students that worked on prototype V1 submission**
     * Naina Garg
@@ -439,6 +434,7 @@ Each of the sector graphs would show (and explain with short commentary) how sec
     * Each member created one visualization with Naina’s being related to investment performance, Jessica’s being based on the macroeconomic dashboard showing historical GDP since 1980 to 2023 and Elizabeth’s sector outlook showing the movements of the four real estate sectors and how they have been affected by various sector-specific variables such as rent growth, vacancy rates etc.
     * Naina’s visualization has the innovative aspect of being a play, pause, resume, play again and view by year animation feature for the investment returns observed in Canada’s real estate markets since 2001. This has not been done in Tableau during our course and we wished to implement it to expose another use case in Javascript with D3.
 
-# WEEK 12
+## WEEK 12
 
-# PROTOTYPE 2:
+## PROTOTYPE 2:
+To view live website [click here!](https://csci-171.github.io/di/)
