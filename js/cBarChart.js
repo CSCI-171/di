@@ -47,21 +47,21 @@ class cBarChart {
                 , change: calculateMarketValueChange(vis.data, "eating_out") },
             { category: 'Clothing and Footwear'
                 , change: calculateMarketValueChange(vis.data, "clothing") },
-            { category: 'Residential Sales Price Index'
+            { category: 'Recreational'
                 , change: calculateMarketValueChange(vis.data, "rec_cult") },
-            { category: 'Residential Sales Price Index'
+            { category: 'Household Furnishings'
                 , change: calculateMarketValueChange(vis.data, "household_expenditures") },
-            { category: 'Residential Sales Price Index'
+            { category: 'Household Appliances'
                 , change: calculateMarketValueChange(vis.data, "household_appliances") },
-            { category: 'Residential Sales Price Index'
+            { category: 'Household Garden Tools and Equipment'
                 , change: calculateMarketValueChange(vis.data, "household_outdoor") },
-            { category: 'Residential Sales Price Index'
+            { category: 'Housing Maintenance and Repairs'
                 , change: calculateMarketValueChange(vis.data, "housing_maintenance") },
         ];
 
         console.log("vis.market_change_data: ", vis.market_change_data)
 
-        vis.margin = { top: 40, right: 0, bottom: 60, left: 60 };
+        vis.margin = { top: 40, right: 20, bottom: 60, left: 225 };
 
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right,
             vis.height = 662.5 - vis.margin.top - vis.margin.bottom;
@@ -97,7 +97,9 @@ class cBarChart {
 
         // TODO might need to move this down to updatevis later? or maybe it's fine here...
         // Scale the range of the data
-        vis.x.domain([d3.min(vis.market_change_data, d => d.change), d3.max(vis.market_change_data, d => d.change)]);
+        // think about vis.x, may need to set some kind of static domain like [-100, 100]
+        // vis.x.domain([d3.min(vis.market_change_data, d => d.change), d3.max(vis.market_change_data, d => d.change)]);
+        vis.x.domain([-3000, 3000])
         vis.y.domain(vis.market_change_data.map(d => d.category));
 
         // Draw the bars
@@ -107,8 +109,14 @@ class cBarChart {
             .attr("class", "bar")
             .attr("y", d => vis.y(d.category))
             .attr("height", vis.y.bandwidth())
-            .attr("x", 0)
-            .attr("width", d => vis.x(d.change));
+            .attr("x", d => (d.change >= 0) ? vis.x(0) : vis.x(d.change))  // This code helps us get the bars to start at the 0 line
+            .attr("width", d => Math.abs(vis.x(0) - vis.x(d.change)));  
+
+
+        vis.market_change_data.forEach(function (d) {
+            console.log("d.category: ", d.category)
+            console.log("width: ", vis.x(d.change))
+        })
 
         // (Filter, aggregate, modify data)
         vis.wrangleData();
