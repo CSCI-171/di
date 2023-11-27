@@ -18,8 +18,8 @@ body {
 h1 {
   font-family: 'Vina Sans', serif;
   color: rgba(148, 16, 16, 0.9);
-  margin-top: 10px;
-  margin-bottom: 10px;
+  /*margin-top: 10px;*/
+  /*margin-bottom: 10px;*/
   font-size: 48px;
   text-shadow: 3px 3px 3px rgba(255, 255, 255, 0.72);
 }
@@ -231,15 +231,15 @@ h3 {
 }
 
 #consumer_vis {
-  height: 50vh;
+  height: 56vh;
 }
 
 #housing_vis {
-  height: 22vh;
+  height: 25vh;
 }
 
 #mortgage_vis {
-  height: 22vh;
+  height: 25vh;
 }
 
 /****************/
