@@ -18,22 +18,25 @@ body {
 h1 {
   font-family: 'Vina Sans', serif;
   color: #941010;
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 10px;
   font-size: 48px;
-  text-shadow: 3px 3px 3px #aaa;
+  text-shadow: 3px 3px 3px rgba(255, 255, 255, 0.72);
 }
 
 h2 {
   color: #ffffff;
+  margin-top: 10px;
   margin-bottom: 10px;
   font-size: 28px;
-  text-shadow: 2px 2px 2px #aaa;
+  text-shadow: 2px 2px 2px #000000;
 }
 
 h3 {
+  color: #000000;
+  margin-top: 30px;
   margin-bottom: 10px;
-  font-size: 28px;
+  font-size: 20px;
   text-shadow: 2px 2px 2px #aaa;
 }
 
@@ -42,8 +45,18 @@ h3 {
   border-radius: 25px;
   background-color: rgba(0, 0, 0, 0.2);
   height: 100vh;
-  width: 100%;
+  width: 100vw;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.container-fluid.d-flex.flex-column {
+  height: 100vh; /* This should already be there, just ensure it's correct */
+}
+
+.row.mt-auto {
+  margin-top: auto; /* This pushes the row to the bottom */
 }
 
 .dot-navigation {
@@ -93,8 +106,8 @@ h3 {
 
 .source {
   font-size: 12px;
-  margin-top: 5vh;
-  margin-bottom: 4vh;
+  margin-top: 3vh;
+  margin-bottom: 2vh;
 }
 
 /****************/
@@ -117,7 +130,7 @@ h3 {
 
 #macro1{
   /*background-image: url(../img/intro.jpg);*/
-  background-color: #999aa0;
+  background-color: #3f3f3f;
   background-size: cover;
   background-attachment: fixed;
 }
@@ -131,14 +144,14 @@ h3 {
 
 #performance1{
   /*background-image: url(../img/intro.jpg);*/
-  background-color: #3f3f3f;
+  background-color: #999aa0;
   background-size: cover;
   background-attachment: fixed;
 }
 
 #performance2{
   /*background-image: url(../img/intro.jpg);*/
-  background-color: #999aa0;
+  background-color: #3f3f3f;
   background-size: cover;
   background-attachment: fixed;
 }
@@ -152,7 +165,7 @@ h3 {
 
 #sectors2{
   /*background-image: url(../img/intro.jpg);*/
-  background-color: #3f3f3f;
+  background-color: #999aa0;
   background-size: cover;
   background-attachment: fixed;
 }
@@ -164,7 +177,7 @@ h3 {
 
 #recommendation{
   background-image: url(../img/Downtown_Ottawa_2022.jpg);
-  background-color: #999aa0;
+  background-color: #3f3f3f;
   background-size: cover;
   background-attachment: fixed;
 }
@@ -184,21 +197,29 @@ h3 {
 .vis-container {
   /*border: 1px solid #ff0000; !* Example border for visualization area *!*/
   padding: 1px;
-  border-radius: 5px;
+  border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.25); /* Light background for the content area */
   width: 100%; /* Use percentage for responsive width */
-  max-height: 300px; /* Example max height */
-  margin-bottom: 10px; /* Spacing between visualizations */
+  margin-bottom: 1px; /* Spacing between visualizations */
   overflow: hidden; /* Prevents content from overflowing */
 }
 
-
-/* Adjustments for smaller screens */
-@media (max-width: 768px) {
-  .vis-container {
-    max-height: 100px; /* Smaller max height for small screens */
-  }
+#macro_vis {
+  height: 25vh;
 }
+
+#consumer_vis {
+  height: 50vh;
+}
+
+#housing_vis {
+  height: 22vh;
+}
+
+#mortgage_vis {
+  height: 22vh;
+}
+
 /****************/
 /*  Perf   Viz  */
 /****************/
