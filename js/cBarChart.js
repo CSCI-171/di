@@ -18,7 +18,7 @@ class cBarChart {
         vis.margin = { top: 40, right: 20, bottom: 60, left: 225 };
 
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
-            vis.height = 462.5 - vis.margin.top - vis.margin.bottom;
+        vis.height = 462.5 - vis.margin.top - vis.margin.bottom;
 
         // SVG drawing area
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
@@ -35,9 +35,9 @@ class cBarChart {
         vis.y = d3.scaleBand()
             .range([vis.height, 0])
             .padding(0.1);
-            // // Trying to have a different padding between groups
-            // .paddingInner(0.1)
-            // .paddingOuter(0.2);
+        // // Trying to have a different padding between groups
+        // .paddingInner(0.1)
+        // .paddingOuter(0.2);
 
         // Define a percentage format
         // const formatPercent = d3.format(".0%");
