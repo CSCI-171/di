@@ -425,7 +425,7 @@ th {
 }
 
 .sector-icon {
-  fill: rgba(148, 16, 16, 0.9);
+  fill: rgb(255, 255, 255);
   margin: 50px;
   width: 150px;
   height: 150px;

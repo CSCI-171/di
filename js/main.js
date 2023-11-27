@@ -151,12 +151,12 @@ function initMainPage(dataArray) {
 
 
     // Initialize map
-    myMap = new CanadaMap('canada', geoData, citiesData, industrialData, multifamilyData, retailData);
-    // myMap = new mapVis('canada', "data/canada.topo.json", "data/filtered_file.json", 'brushDiv');
+    //myMap = new CanadaMap('canada', geoData, citiesData, industrialData, multifamilyData, retailData);
+    myMap = new CanadaMap('canada', "data/canada.topo.json", "data/filtered_file.json", 'brushDiv');
     // Initialize map with actual data
     //myMap = new MapVis('canada', officeData, geoData, citiesData, industrialData, multifamilyData, retailData);
 
-    console.log(officeData);
+    console.log("office_data: ", officeData);
 
     // Initialize visualizations for each sector
     myIndustrial = new IndustrialVis('industrialVis', industrialData);
@@ -165,7 +165,7 @@ function initMainPage(dataArray) {
     myRetail = new RetailVis('retailVis', retailData);
 
     // init brush
-    myBrushVis = new BrushVis('brushDiv', industrialData, officeData, multifamilyData, retailData);
+    //myBrushVis = new BrushVis('brushDiv', industrialData, officeData, multifamilyData, retailData);
 
     // Listen for the category selector change
     // document.getElementById('categorySelector').addEventListener('change', categoryChange);

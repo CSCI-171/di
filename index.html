@@ -1,9 +1,8 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta content="" name="description">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CS171 - Term Project &amp; Invest Real Estate</title>
     <!-- Load CSS libraries -->
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
@@ -245,35 +244,34 @@
             <div class="container custom-container-box">
                 <h1>What is the impact of economic events over time by market?</h1>
                 <!-- Placeholder Image Row -->
-                <div class="row">
-                    <img alt="Sectors Visualization" class="img-fluid" src="img/sectors.jpeg">
-                </div>
-                <!--                &lt;!&ndash; Map and Sector Visualizations Row &ndash;&gt;-->
-                <!--                <div class="row" id="visualization-container">-->
-                <!--                    <div class="col sector-icon" id="industrial">-->
-                <!--                        &lt;!&ndash; SVG for Industrial will be loaded here &ndash;&gt;-->
-                <!--                    </div>-->
-                <!--                    <div class="col sector-icon" id="office">-->
-                <!--                        <div id="officeVis">-->
-                <!--                            &lt;!&ndash; SVG for Office will be loaded here &ndash;&gt;-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                    <div class="col sector-icon" id="multi">-->
-                <!--                        &lt;!&ndash; SVG for Multi will be loaded here &ndash;&gt;-->
-                <!--                    </div>-->
-                <!--                    <div class="col sector-icon" id="retail">-->
-                <!--                        &lt;!&ndash; SVG for Retail will be loaded here &ndash;&gt;-->
-                <!--                    </div>-->
-                <!--                    <div class="col" id="canada">-->
-                <!--                        &lt;!&ndash; Map of Canada will be rendered here &ndash;&gt;-->
-                <!--                    </div>-->
-                <!--                </div>-->
-                <!-- Timeline Container -->
-                <div class="row" id="visualization-container">
-                    <div class="col" id="brushDiv" style="height: 18vh; background: #bdbdbd;">
-                        <!-- Timeline visualization will be loaded here -->
+                <!-- Map and Sector Visualizations Row -->
+                <div id="visualization-container">
+                    <div class="sector-icon" id="industrial">
+                        <!-- SVG for Industrial will be loaded here -->
+                    </div>
+                    <div class="sector-icon" id="office">
+                        <div id="officeVis"></div>
+                        <!-- SVG for Office will be loaded here -->
+                    </div>
+                    <div class="sector-icon" id="multi">
+                        <!-- SVG for Multi will be loaded here -->
+                    </div>
+                    <div class="sector-icon" id="retail">
+                        <!-- SVG for Retail will be loaded here -->
+                    </div>
+                    <div id="canada">
+                        <!-- Map of Canada will be rendered here -->
                     </div>
                 </div>
+
+                <!-- TIMELINE CONTAINER -->
+                <div class="container-fluid">
+                    <div class="row" style="height: 18vh; padding: 0; border: 0">
+                        <div class="vis-container" id="brushDiv" style="height: 100%; width:100%;"></div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </section>
@@ -361,9 +359,9 @@
 </div>
 
 <!-- Load JS libraries: jQuery, bootstrap, D3 -->
-<script crossorigin="anonymous"
-        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
 <!-- jQuery -->
@@ -375,6 +373,7 @@
 <script src="https://d3js.org/d3-geo.v2.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://d3js.org/topojson.v2.min.js"></script>
+<script src="js/datamaps.can.min.js"></script>
 
 <!--==============================================================================================-->
 <!-- Team JS Files -->
@@ -384,6 +383,7 @@
 <script src="js/hBarChart.js"></script>
 <script src="js/AreaChart.js"></script>
 <script src="js/vectom.js"></script>
+<script src="js/canadaMap.js"></script>
 <script src="js/industrialVis.js"></script>
 <script src="js/multifamilyVis.js"></script>
 <script src="js/retailVis.js"></script>
