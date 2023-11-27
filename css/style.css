@@ -51,6 +51,28 @@ h3 {
   flex-direction: column;
 }
 
+.text-box {
+  background-color: white;
+  border: 1px solid black;
+  padding: 20px;
+  margin-top: 20px; /* or any other value for positioning */
+  box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Optional: for better visibility */
+  border-radius: 5px; /* Optional: for rounded corners */
+}
+
+.engaging-text {
+  font-family: 'Roboto', sans-serif; /* This is a modern, crisp font */
+  font-weight: 400; /* Normal font weight - 700 for bold */
+  color: #333; /* Dark gray for sharpness */
+  font-size: 1.2em;
+  line-height: 1.6; /* Adjust line height for better readability */
+  text-align: justify; /* This makes the text edges sharp and aligned */
+}
+
+.text-left-class {
+  text-align: left; /* Aligns text to the left */
+}
+
 .container-fluid.d-flex.flex-column {
   height: 100vh; /* This should already be there, just ensure it's correct */
 }
