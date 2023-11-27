@@ -129,7 +129,7 @@ class cBarChart {
             .attr("fill", d => {
                 switch (d.grouping) {
                     case "Total":
-                        return "rgba(255,255,255,0.9)";
+                        return "rgb(15, 83, 134, 0.9)";
                     case "Essential":
                         return "rgb(42, 145, 46, 0.9)"; // Green replaced
                     case "Discretionary":
