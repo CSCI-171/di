@@ -8,11 +8,20 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="leaflet" level="application" />
+    <orderEntry type="library" name="d3-array.v2" level="application" />
+    <orderEntry type="library" name="d3-geo.v2" level="application" />
+    <orderEntry type="library" name="topojson.v3" level="application" />
+    <orderEntry type="library" name="d3.v7" level="application" />
+    <orderEntry type="library" name="d3-scale-chromatic.v1" level="application" />
+    <orderEntry type="library" name="jquery-3.6.0" level="application" />
+    <orderEntry type="library" name="d3.v7" level="application" />
+    <orderEntry type="library" name="d3-array.v2" level="application" />
+    <orderEntry type="library" name="d3-geo.v2" level="application" />
+    <orderEntry type="library" name="d3-scale-chromatic.v1" level="application" />
     <orderEntry type="library" name="topojson.v3" level="application" />
     <orderEntry type="library" name="leaflet" level="application" />
-    <orderEntry type="library" name="d3-scale-chromatic.v1" level="application" />
-    <orderEntry type="library" name="d3-geo.v2" level="application" />
-    <orderEntry type="library" name="d3-array.v2" level="application" />
-    <orderEntry type="library" name="d3.v7" level="application" />
+    <orderEntry type="library" name="bootstrap" level="application" />
+    <orderEntry type="library" name="jquery-3.6.0" level="application" />
   </component>
 </module>

@@ -1,10 +1,23 @@
 class cBarChart {
 
-    constructor(_parentElement, _data) {
+    constructor(_parentElement, _data, _colors) {
         this.parentElement = _parentElement;
         this.data = _data;
-        // this.eventHandler = _eventHandler;
+        this.totalColor = _colors.totalColor;
+        this.essentialColor = _colors.essentialColor;
+        this.discretionaryColor = _colors.discretionaryColor;
+        this.housingColor = _colors.housingColor;
+
+
+        this.colorScale = {
+            "Total": this.totalColor, // Tan
+            "Essential": this.essentialColor, // Deep Blue
+            "Discretionary": this.discretionaryColor, // Light Blue
+            "Housing": this.housingColor, // Use CSS variable color
+        };
+
         this.initVis();
+
     }
 
     initVis() {
@@ -34,7 +47,7 @@ class cBarChart {
 
         vis.y = d3.scaleBand()
             .range([vis.height, 0])
-            .padding(0.1);
+            .padding(0.2);
         // // Trying to have a different padding between groups
         // .paddingInner(0.1)
         // .paddingOuter(0.2);
@@ -80,6 +93,37 @@ class cBarChart {
         //     console.log("width: ", vis.x(d.change))
         // })
 
+        //// Creating the legend
+
+        var keys = Object.keys(vis.colorScale);
+        var size = 20;
+
+        // Legend container
+        var legend = vis.svg.append("g")
+            .attr("class", "legend")
+            .attr("transform", "translate(525, 250)"); // Adjust positioning as needed
+
+        // Add a square for each legend item
+        var legendItems = legend.selectAll(".legend-item")
+            .data(keys)
+            .enter().append("g")
+            .attr("class", "legend-item")
+            .attr("transform", (d, i) => "translate(0," + i * (size + 5) + ")");
+
+        legendItems.append("rect")
+            .attr("width", size)
+            .attr("height", size)
+            .style("fill", d => vis.colorScale[d]);
+
+        // Add text labels for each legend item
+        legendItems.append("text")
+            .attr("x", size * 1.2)
+            .attr("y", size / 2)
+            .style("fill", "black")
+            .text(d => d)
+            .attr("text-anchor", "left")
+            .style("alignment-baseline", "middle");
+        
         // (Filter, aggregate, modify data)
         vis.wrangleData();
     }
@@ -129,15 +173,15 @@ class cBarChart {
             .attr("fill", d => {
                 switch (d.grouping) {
                     case "Total":
-                        return "rgb(15, 83, 134, 0.9)";
+                        return vis.totalColor;
                     case "Essential":
-                        return "rgb(42, 145, 46, 0.9)"; // Green replaced
+                        return vis.essentialColor;
                     case "Discretionary":
-                        return "rgb(231, 157, 19, 0.9)"; // Orange replaced
+                        return vis.discretionaryColor;
                     case "Housing":
-                        return "rgb(148, 16, 16, 0.9)"; // Brown replaced
+                        return vis.housingColor; // Red
                     default:
-                        return "rgb(63,63,63, 0.9)"; // Or any other default color
+                        return "rgb(63,63,63, 0.9)";
                 }
             });
 
